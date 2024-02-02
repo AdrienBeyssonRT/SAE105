@@ -1,0 +1,49 @@
+# Usage Guide for the Provided Python Script
+
+## Overview
+This Python script performs data extraction and analysis based on the content of a file named "DumpFile.txt." It processes the data, extracts relevant information, and generates a CSV file ("test.csv") along with an HTML representation of the data.
+
+## Prerequisites
+Ensure that you have the required Python libraries installed. You can install them using the following command:
+```bash
+pip install numpy matplotlib tabulate pypandoc
+```
+
+## Script Execution
+1. **File Input:** Place the "DumpFile.txt" in the "public" directory. This file should contain the data to be processed.
+
+2. **Run the Script:** Execute the script by running the following command in your terminal:
+   ```bash
+   python script_name.py
+   ```
+   Replace "script_name.py" with the actual name of your Python script.
+
+3. **Output Files:**
+   - The script will create a CSV file named "test.csv" containing extracted data.
+   - An HTML file named "test.html" will be generated from the CSV file.
+
+## Data Extraction
+The script reads each line from "DumpFile.txt" and extracts specific information based on the condition that the line starts with '11:42'.
+
+The extracted data includes:
+- Date
+- Source IP
+- Source Port
+- Destination IP
+- Flag
+- Sequence Number (SEQ)
+- Acknowledgment Number (ACK)
+- Window Size (WIN)
+- Options
+- Length
+
+## Visualization
+The script generates a line graph using Matplotlib to visualize unique destination IP addresses. The graph is displayed after script execution.
+
+## Additional Notes
+- If "DumpFile.txt" is not found, a message will be displayed.
+- The script uses NumPy for array manipulation, Matplotlib for graph plotting, Tabulate for table formatting, and Pandoc for text conversion.
+
+Feel free to customize the script according to your needs or integrate it into your workflow.
+
+For any issues or questions, please refer to the script's comments or seek assistance from the script's author.

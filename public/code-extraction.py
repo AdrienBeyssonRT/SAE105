@@ -1,27 +1,27 @@
-import numpy as np
-import os
-import csv
-import matplotlib.pyplot as plt
-import tabulate
-import pypandoc
+import numpy as np  # Importe la bibliothèque NumPy pour manipuler des tableaux et des données numériques
+import os  # Importe la bibliothèque os pour interagir avec le système d'exploitation
+import csv  # Importe la bibliothèque csv pour la manipulation de fichiers CSV
+import matplotlib.pyplot as plt  # Importe la bibliothèque matplotlib pour créer des graphiques
+import tabulate  # Importe la bibliothèque tabulate pour formater les tables
+import pypandoc  # Importe la bibliothèque pypandoc pour la conversion de texte entre différents formats
 
 try:
-    with open("public/DumpFile.txt", encoding="utf8") as fh:
-        res = fh.read()
+    with open("public/DumpFile.txt", encoding="utf8") as fh:  # Tente d'ouvrir le fichier "DumpFile.txt" en lecture
+        res = fh.read()  # Lit le contenu du fichier dans la variable res
 except FileNotFoundError:
-    print("Le fichier n'existe pas : %s" % os.path.abspath('fichieratraiter.txt'))
-    res = ""
+    print("Le fichier n'existe pas : %s" % os.path.abspath('fichieratraiter.txt'))  # Affiche un message si le fichier n'est pas trouvé
+    res = ""  # Initialise la variable res avec une chaîne vide si le fichier n'est pas trouvé
 
-ress = res.split('\n')
-tab_dest = np.array([])
-fic = open("test.csv", "w")  # test est le fichier d'arrivée des extractions
+ress = res.split('\n')  # Divise le contenu du fichier en lignes et stocke dans la liste ress
+tab_dest = np.array([])  # Initialise un tableau NumPy vide pour stocker des adresses IP uniques
+fic = open("test.csv", "w")  # Ouvre le fichier "test.csv" en mode écriture
 evenement = "DATE ; SOURCE ; PORT ; DESTINATION ; FLAG ; SEQ ; ACK ; WIN ; OPTIONS ; LENGTH"
-fic.write(evenement + "\n")
+fic.write(evenement + "\n")  # Écrit la première ligne d'en-tête dans le fichier CSV
 
-characters = ":"
+characters = ":"  # Initialise le caractère ":" dans la variable characters
 
-for event in ress:
-    if event.startswith('11:42'):
+for event in ress:  # Parcourt chaque ligne du fichier lu
+    if event.startswith('11:42'):  # Vérifie si la ligne commence par '11:42'
         seq = ""
         heure1 = ""
         nomip = ""
@@ -111,18 +111,20 @@ for event in ress:
         evenement = f"{heure1};{nomip};{port};{nomip2};{flag};{seq};{ack};{win};{options};{length}"
         fic.write(evenement + "\n")
 
-# Convert CSV to Markdown
+# Convertit le CSV en table Markdown
 csv_data = np.genfromtxt("test.csv", delimiter=';', dtype=None, names=True, encoding=None)
 markdown_table = tabulate.tabulate(csv_data, headers=["DATE", "SOURCE", "PORT", "DESTINATION", "FLAG", "SEQ", "ACK", "WIN", "LENGTH"], tablefmt="pipe")
 
-# Convert Markdown to HTML
+# Convertit la table Markdown en HTML
 html_content = pypandoc.convert_text(markdown_table, "html", format="md")
 
-# Save HTML content to file
+# Sauvegarde le contenu HTML dans un fichier
 with open("public/test.html", "w", encoding="utf-8") as html_file:
     html_file.write(html_content)
 
+# Affiche le tableau final et génère un graphique
 print("tableau final", tab_dest)
 plt.plot(range(len(tab_dest)), tab_dest)
 plt.show()
-fic.close()
+
+fic.close()  # Ferme le fichier "test.csv"
